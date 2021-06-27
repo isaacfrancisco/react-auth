@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import api from "../../services/api";
 import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -17,11 +18,8 @@ export default function Login() {
         password,
       });
 
-      console.log(response.data.token);
-
       localStorage.setItem("token", response.data.token);
 
-      alert("Logado!");
       history.push("/home");
     } catch (err) {
       console.log(err);
@@ -50,6 +48,7 @@ export default function Login() {
           />
         </label>
         <input type="submit" value="Enviar" />
+        <Link to="/register">Não possui uma conta, clique para registrar</Link>
       </form>
     </div>
   );
