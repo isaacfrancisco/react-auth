@@ -81,7 +81,7 @@ export default function Login() {
               onClick={handleLogin}
               fullWidth>Entrar</Button>
           </Grid>
-          <Link to="" style={spacing}>
+          <Link to="/forgot_password" style={spacing}>
             Esqueceu a Senha?
           </Link>
           <Typography style={spacing}>
