@@ -55,7 +55,7 @@ export default function Register() {
   return (
     <>
       <Grid>
-        <Paper elevation={10} style={paperStyle} onSubmit={handleRegister}>
+        <Paper elevation={10} style={paperStyle}>
           <Grid align="center">
             <Avatar src={Logo} />
             <h2>Cadastrar</h2>
