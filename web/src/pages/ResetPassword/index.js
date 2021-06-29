@@ -9,14 +9,16 @@ import Logo from '../../assets/img/logo2.png';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-export default function ForgotPassword() {
+export default function ResetPassword() {
     const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [token, setToken] = useState("");
 
     const history = useHistory();
 
     const paperStyle = {
         padding: 20,
-        height: '40vh',
+        height: '55vh',
         width: 300,
         margin: '150px auto'
     }
@@ -29,14 +31,14 @@ export default function ForgotPassword() {
         margin: '10px'
     }
 
-    async function handleForgotPassword(e) {
+    async function handleResetPassword(e) {
         e.preventDefault();
 
         try {
             await api.post("/auth/forgot_password", {
                 email,
             });
-            history.push("/reset_password");
+            history.push("/home");
         } catch (err) {
             console.log(err);
         }
@@ -48,11 +50,11 @@ export default function ForgotPassword() {
                 <Paper elevation={10} style={paperStyle}>
                     <Grid align="center">
                         <Avatar src={Logo} />
-                        <h2>Esqueceu a Senha</h2>
+                        <h2>Nova Senha</h2>
                     </Grid>
                     <Grid item xs={12} style={spacing}>
                         <Typography>
-                            <span>Insira o email para recuperar a senha.</span>
+                            <span>Insira o email, a nova senha, e o token de confirmação recebido pelo email para recuperar a senha.</span>
                         </Typography>
                     </Grid>
                     <Grid item xs={12} style={spacing}>
@@ -63,12 +65,29 @@ export default function ForgotPassword() {
                             fullWidth
                         />
                     </Grid>
+                    <Grid item xs={12} style={spacing}>
+                        <TextField
+                            label="Token"
+                            value={token}
+                            onChange={(e) => setToken(e.target.value)}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item xs={12} style={spacing}>
+                        <TextField
+                            label="Senha"
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            fullWidth
+                        />
+                    </Grid>
                     <Grid item xs={12} style={buttonStyle}>
                         <Button
                             type="submit"
                             color="primary"
                             variant="contained"
-                            onClick={handleForgotPassword}
+                            onClick={handleResetPassword}
                             fullWidth>Enviar</Button>
                     </Grid>
                 </Paper>
