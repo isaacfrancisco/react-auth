@@ -13,12 +13,12 @@ import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import SettingsIcon from '@material-ui/icons/Settings';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import Paper from '@material-ui/core/Paper';
 import { Grid } from "@material-ui/core";
 import Button from '@material-ui/core/Button';
+import CreateProject from "../../components/CreateProject";
 
 const drawerWidth = 240;
 
@@ -75,12 +75,25 @@ export default function Home() {
   const AuthToken = "Bearer ".concat(token);
   const [projects, setProjects] = useState([]);
 
+  const [dialogIsOpen, setDialogIsOpen] = React.useState(false);
+
+  const openDialog = () => setDialogIsOpen(true);
+
+  const closeDialog = () => setDialogIsOpen(false);
+
   const classes = useStyles();
 
-  const columns = ["Titulo", "Id", "Descrição", "Data de Criação"];
+  const columns = ["Titulo", "Id", "Usuário", "Tarefa", "Descrição", "Status", "Data de Criação"];
 
   const options = {
     filterType: "checkbox",
+    selectableRowsHeader: false,
+    selectableRowsHideCheckboxes: true,
+    search: false,
+    download: false,
+    print: false,
+    viewColumns: false,
+    filter: false
   };
 
   useEffect(() => {
@@ -89,20 +102,31 @@ export default function Home() {
 
   async function handleShowProjects() {
     setProjects([]);
-    var titulo, id, descricao, dataCriacao;
+    var titulo, id, descricao, dataCriacao, tarefa, status, usuario;
     const data = [];
     try {
       const response = await api.get("/projects", {
         headers: { Authorization: AuthToken },
       });
 
+      console.log(response.data);
+
       for (let i = 0; i < response.data.projects.length; i++) {
         titulo = response.data.projects[i].title;
         id = response.data.projects[i]._id;
         descricao = response.data.projects[i].description;
         dataCriacao = response.data.projects[i].createdAt;
+        for (let j = 0; j < response.data.projects[i].tasks.length; j++) {
+          tarefa = response.data.projects[i].tasks[j].title;
+          if (response.data.projects[i].tasks[j].completed === false) {
+            status = "Incompleta";
+          } else {
+            status = "Completada";
+          }
+        }
+        usuario = response.data.projects[i].user.name;
 
-        data.push([titulo, id, descricao, dataCriacao]);
+        data.push([titulo, id, usuario, tarefa, descricao, status, dataCriacao]);
       }
       setProjects(data);
     } catch (err) {
@@ -140,12 +164,7 @@ export default function Home() {
                 </ListItemIcon>
                 <ListItemText className={classes.colorText} primary="Projetos" />
               </ListItem>
-              <ListItem button>
-                <ListItemIcon>
-                  <SettingsIcon className={classes.colorText} />
-                </ListItemIcon>
-                <ListItemText className={classes.colorText} primary="Configurações" />
-              </ListItem>
+
               <ListItem button>
                 <ListItemIcon>
                   <ArrowBackIcon className={classes.colorText} />
@@ -170,7 +189,7 @@ export default function Home() {
                 </Button>
               </Grid>
               <Grid item>
-                <Button variant="contained" color="primary" style={greenButton}>
+                <Button variant="contained" color="primary" style={greenButton} onClick={openDialog}>
                   Criar Projeto
                 </Button>
               </Grid>
@@ -194,6 +213,7 @@ export default function Home() {
             options={options}
           />
         </main>
+        <CreateProject open={dialogIsOpen} onClose={closeDialog} />
       </div>
     </>
 
