@@ -39,8 +39,11 @@ export default function Login() {
         email,
         password,
       });
+      console.log(response.data);
 
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("name", response.data.user.name);
+      localStorage.setItem("id", response.data.user._id);
 
       history.push("/home");
     } catch (err) {
