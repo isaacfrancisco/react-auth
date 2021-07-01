@@ -20,6 +20,8 @@ import { Grid } from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import CreateProject from "../../components/CreateProject";
 import UpdateProject from "../../components/UpdateProject";
+import DeleteProject from '../../components/DeleteProject';
+import { useHistory } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -63,19 +65,24 @@ const greenButton = {
   background: "#2e7d32"
 }
 
-const redButton = {
-  background: "#c62828"
-}
-
 export default function Home() {
   const token = localStorage.getItem("token");
   const AuthToken = "Bearer ".concat(token);
   const [projects, setProjects] = useState([]);
 
+  const history = useHistory();
+
   const [openDialogName, setOpenDialog] = React.useState(false);
   const handleClose = () => setOpenDialog(false);
   const openCreateDialog = () => {
     setOpenDialog('CREATE');
+  }
+
+  const handleLogout = () => {
+    localStorage.setItem("token", "");
+    localStorage.setItem("name", "");
+    localStorage.setItem("id", "");
+    history.push("/")
   }
 
   const classes = useStyles();
@@ -101,12 +108,11 @@ export default function Home() {
     setProjects([]);
     var titulo, id, descricao, dataCriacao, tarefa, status, usuario;
     const data = [];
+    const dataSearch = [];
     try {
       const response = await api.get("/projects", {
         headers: { Authorization: AuthToken },
       });
-
-      console.log(response.data);
 
       for (let i = 0; i < response.data.projects.length; i++) {
         titulo = response.data.projects[i].title;
@@ -140,9 +146,20 @@ export default function Home() {
               statusProject={status}
               handleRefresh={(e) => handleRefresh()}
             />
+            <DeleteProject
+              idProject={id}
+              handleRefresh={(e) => handleRefresh()}
+            />
           </span>
         ]);
+
+        dataSearch.push({
+          title: titulo,
+          id: id
+        })
       }
+
+      console.log(dataSearch);
       setProjects(data);
     } catch (err) {
       console.log(err);
@@ -184,7 +201,7 @@ export default function Home() {
                 <ListItemText className={classes.colorText} primary="Projetos" />
               </ListItem>
 
-              <ListItem button>
+              <ListItem onClick={handleLogout} button>
                 <ListItemIcon>
                   <ArrowBackIcon className={classes.colorText} />
                 </ListItemIcon>
@@ -210,11 +227,6 @@ export default function Home() {
               <Grid item>
                 <Button variant="contained" color="primary" style={greenButton} onClick={openCreateDialog}>
                   Criar Projeto
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button variant="contained" color="primary" style={redButton}>
-                  Remover Projeto
                 </Button>
               </Grid>
             </Grid>
