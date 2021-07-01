@@ -142,7 +142,7 @@ export default function CreateProject(props) {
                 </Alert>
             </Snackbar>
             <Snackbar open={openErrorSnackbar} autoHideDuration={2000} onClose={handleCloseErrorSnackbar}>
-                <Alert onClose={handleCloseSnackbar} severity="error">
+                <Alert onClose={handleCloseErrorSnackbar} severity="error">
                     Erro ao criar o projeto!
                 </Alert>
             </Snackbar>

@@ -20,9 +20,6 @@ import { Grid } from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import CreateProject from "../../components/CreateProject";
 import UpdateProject from "../../components/UpdateProject";
-import EditIcon from '@material-ui/icons/Edit';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
 
 const drawerWidth = 240;
 
@@ -80,9 +77,6 @@ export default function Home() {
   const openCreateDialog = () => {
     setOpenDialog('CREATE');
   }
-  const openUpdateDialog = () => {
-    setOpenDialog('UPDATE');
-  }
 
   const classes = useStyles();
 
@@ -138,11 +132,14 @@ export default function Home() {
           status,
           dataCriacao,
           <span>
-            <Tooltip title="Editar Projeto">
-              <IconButton onClick={openUpdateDialog}>
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
+            <UpdateProject
+              titulo={titulo}
+              idProject={id}
+              descricao={descricao}
+              tarefa={tarefa}
+              statusProject={status}
+              handleRefresh={(e) => handleRefresh()}
+            />
           </span>
         ]);
       }
@@ -151,6 +148,8 @@ export default function Home() {
       console.log(err);
     }
   }
+
+
 
   function handleRefresh() {
     handleShowProjects();
@@ -232,10 +231,6 @@ export default function Home() {
           open={openDialogName === 'CREATE'}
           onClose={handleClose}
           handleRefresh={(e) => handleRefresh()}
-        />
-        <UpdateProject
-          open={openDialogName === 'UPDATE'}
-          onClose={handleClose}
         />
       </div>
     </>
