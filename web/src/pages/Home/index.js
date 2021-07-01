@@ -22,6 +22,7 @@ import CreateProject from "../../components/CreateProject";
 import UpdateProject from "../../components/UpdateProject";
 import DeleteProject from '../../components/DeleteProject';
 import { useHistory } from "react-router-dom";
+import SearchProject from '../../components/SearchProject';
 
 const drawerWidth = 240;
 
@@ -69,21 +70,11 @@ export default function Home() {
   const token = localStorage.getItem("token");
   const AuthToken = "Bearer ".concat(token);
   const [projects, setProjects] = useState([]);
+  const [searchData, setSearchData] = useState([]);
+
+  const [project, setProject] = useState('');
 
   const history = useHistory();
-
-  const [openDialogName, setOpenDialog] = React.useState(false);
-  const handleClose = () => setOpenDialog(false);
-  const openCreateDialog = () => {
-    setOpenDialog('CREATE');
-  }
-
-  const handleLogout = () => {
-    localStorage.setItem("token", "");
-    localStorage.setItem("name", "");
-    localStorage.setItem("id", "");
-    history.push("/")
-  }
 
   const classes = useStyles();
 
@@ -99,6 +90,58 @@ export default function Home() {
     viewColumns: false,
     filter: false
   };
+
+  const [errorText, setErrorText] = useState('');
+
+  const [openDialogName, setOpenDialog] = React.useState(false);
+  const handleClose = () => setOpenDialog(false);
+  const openCreateDialog = () => {
+    setOpenDialog('CREATE');
+  }
+  const openSearchDialog = () => {
+    setProject('');
+    setOpenDialog('SEARCH');
+  }
+
+  const handleLogout = () => {
+    localStorage.setItem("token", "");
+    localStorage.setItem("name", "");
+    localStorage.setItem("id", "");
+    history.push("/")
+  }
+
+  const onChange = (event, newValue) => {
+    setProject(newValue);
+  }
+
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
+
+  const handleOpenSnackbar = () => {
+    setOpenSnackbar(true);
+  };
+
+  const handleOpenErrorSnackbar = () => {
+    setOpenErrorSnackbar(true);
+  };
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnackbar(false);
+  };
+
+  const handleCloseErrorSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenErrorSnackbar(false);
+  };
+
+
 
   useEffect(() => {
     handleShowProjects();
@@ -161,12 +204,74 @@ export default function Home() {
 
       console.log(dataSearch);
       setProjects(data);
+      setSearchData(dataSearch);
     } catch (err) {
       console.log(err);
     }
   }
 
+  async function handleSearch() {
+    if (project.id === '') {
+      setErrorText('Selecione um projeto!');
+    } else {
+      try {
+        setProjects([]);
+        var titulo, id, descricao, dataCriacao, tarefa, status, usuario;
+        const data = [];
 
+        const response = await api.get("/projects/" + project.id,
+          {
+            headers: { Authorization: AuthToken },
+          });
+
+        titulo = response.data.project.title;
+        id = response.data.project._id;
+        descricao = response.data.project.description;
+        dataCriacao = response.data.project.createdAt;
+        for (let i = 0; i < response.data.project.tasks.length; i++) {
+          tarefa = response.data.project.tasks[i].title;
+          if (response.data.project.tasks[i].completed === false) {
+            status = "Incompleta";
+          } else {
+            status = "Completada";
+          }
+        }
+        usuario = response.data.project.user.name;
+
+        data.push([
+          titulo,
+          id,
+          usuario,
+          descricao,
+          tarefa,
+          status,
+          dataCriacao,
+          <span>
+            <UpdateProject
+              titulo={titulo}
+              idProject={id}
+              descricao={descricao}
+              tarefa={tarefa}
+              statusProject={status}
+              handleRefresh={(e) => handleRefresh()}
+            />
+            <DeleteProject
+              idProject={id}
+              handleRefresh={(e) => handleRefresh()}
+            />
+          </span>
+        ]);
+
+        setProjects(data);
+        setErrorText('');
+        handleClose();
+        handleOpenSnackbar();
+      } catch (err) {
+        setErrorText('');
+        handleOpenErrorSnackbar();
+      }
+    }
+  }
 
   function handleRefresh() {
     handleShowProjects();
@@ -220,7 +325,7 @@ export default function Home() {
               alignItems="center"
             >
               <Grid item>
-                <Button variant="contained" color="primary">
+                <Button variant="contained" color="primary" onClick={openSearchDialog}>
                   Buscar Projeto
                 </Button>
               </Grid>
@@ -243,6 +348,21 @@ export default function Home() {
           open={openDialogName === 'CREATE'}
           onClose={handleClose}
           handleRefresh={(e) => handleRefresh()}
+        />
+        <SearchProject
+          open={openDialogName === 'SEARCH'}
+          onClose={handleClose}
+          searchData={searchData}
+          valueSearch={project}
+          onChange={onChange}
+          openSnackbar={openSnackbar}
+          openErrorSnackbar={openErrorSnackbar}
+          handleSearch={(e) => handleSearch()}
+          handleOpenSnackbar={handleOpenSnackbar}
+          handleOpenErrorSnackbar={handleOpenErrorSnackbar}
+          handleCloseSnackbar={handleCloseSnackbar}
+          handleCloseErrorSnackbar={handleCloseErrorSnackbar}
+          errorText={errorText}
         />
       </div>
     </>
