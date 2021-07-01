@@ -13,7 +13,7 @@ const token = localStorage.getItem("token");
 const AuthToken = "Bearer ".concat(token);
 
 export default function UpdateProject(props) {
-    const { open, onClose, titulo } = props;
+    const { open, onClose } = props;
 
     console.log(props);
 

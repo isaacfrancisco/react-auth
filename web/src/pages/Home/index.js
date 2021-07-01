@@ -152,6 +152,10 @@ export default function Home() {
     }
   }
 
+  function handleRefresh() {
+    handleShowProjects();
+  }
+
   return (
     <>
       <div className={classes.root}>
@@ -224,7 +228,11 @@ export default function Home() {
             options={options}
           />
         </main>
-        <CreateProject open={openDialogName === 'CREATE'} onClose={handleClose} />
+        <CreateProject
+          open={openDialogName === 'CREATE'}
+          onClose={handleClose}
+          handleRefresh={(e) => handleRefresh()}
+        />
         <UpdateProject
           open={openDialogName === 'UPDATE'}
           onClose={handleClose}

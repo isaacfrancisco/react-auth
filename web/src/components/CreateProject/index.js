@@ -7,17 +7,59 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import api from '../../services/api';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const id = localStorage.getItem('id');
 const token = localStorage.getItem("token");
 const AuthToken = "Bearer ".concat(token);
 
+const error = {
+    color: 'red',
+    fontSize: '12px',
+    position: 'relative'
+}
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 export default function CreateProject(props) {
-    const { open, onClose } = props;
+    const { open, onClose, handleRefresh } = props;
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [task, setTask] = useState('');
+
+    const [errorText, setErrorText] = useState('');
+
+    const [openSnackbar, setOpenSnackbar] = React.useState(false);
+    const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
+
+    const handleOpenSnackbar = () => {
+        setOpenSnackbar(true);
+    };
+
+    const handleOpenErrorSnackbar = () => {
+        setOpenErrorSnackbar(true);
+    };
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenSnackbar(false);
+    };
+
+    const handleCloseErrorSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenErrorSnackbar(false);
+    };
+
 
     async function handleCreate(e) {
         e.preventDefault();
@@ -26,18 +68,25 @@ export default function CreateProject(props) {
             assignedTo: id
         }]
 
-        try {
-            const response = await api.post("/projects", {
-                title,
-                description,
-                tasks,
-            }, {
-                headers: { Authorization: AuthToken },
-            });
-            console.log(response.data);
-
-        } catch (err) {
-            console.log(err);
+        if (title === '' || description === '' || task === '') {
+            setErrorText('Digite os dados corretamente!');
+        } else {
+            try {
+                await api.post("/projects", {
+                    title,
+                    description,
+                    tasks,
+                }, {
+                    headers: { Authorization: AuthToken },
+                });
+                setErrorText('');
+                handleRefresh();
+                onClose();
+                handleOpenSnackbar();
+            } catch (err) {
+                setErrorText('');
+                handleOpenErrorSnackbar();
+            }
         }
     }
 
@@ -49,6 +98,7 @@ export default function CreateProject(props) {
                     <DialogContentText>
                         Insira os dados para criar um novo projeto.
                     </DialogContentText>
+                    <span style={error}> {errorText} </span>
                     <TextField
                         margin="dense"
                         id="title"
@@ -86,6 +136,16 @@ export default function CreateProject(props) {
                     </Button>
                 </DialogActions>
             </Dialog>
+            <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity="success">
+                    Projeto criado com sucesso!
+                </Alert>
+            </Snackbar>
+            <Snackbar open={openErrorSnackbar} autoHideDuration={2000} onClose={handleCloseErrorSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity="error">
+                    Erro ao criar o projeto!
+                </Alert>
+            </Snackbar>
         </div>
     );
 }
