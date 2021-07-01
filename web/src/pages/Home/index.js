@@ -19,6 +19,10 @@ import Paper from '@material-ui/core/Paper';
 import { Grid } from "@material-ui/core";
 import Button from '@material-ui/core/Button';
 import CreateProject from "../../components/CreateProject";
+import UpdateProject from "../../components/UpdateProject";
+import EditIcon from '@material-ui/icons/Edit';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
 
 const drawerWidth = 240;
 
@@ -62,10 +66,6 @@ const greenButton = {
   background: "#2e7d32"
 }
 
-const yellowButton = {
-  background: "#f9a825"
-}
-
 const redButton = {
   background: "#c62828"
 }
@@ -75,15 +75,18 @@ export default function Home() {
   const AuthToken = "Bearer ".concat(token);
   const [projects, setProjects] = useState([]);
 
-  const [dialogIsOpen, setDialogIsOpen] = React.useState(false);
-
-  const openDialog = () => setDialogIsOpen(true);
-
-  const closeDialog = () => setDialogIsOpen(false);
+  const [openDialogName, setOpenDialog] = React.useState(false);
+  const handleClose = () => setOpenDialog(false);
+  const openCreateDialog = () => {
+    setOpenDialog('CREATE');
+  }
+  const openUpdateDialog = () => {
+    setOpenDialog('UPDATE');
+  }
 
   const classes = useStyles();
 
-  const columns = ["Titulo", "Id", "Usuário", "Tarefa", "Descrição", "Status", "Data de Criação"];
+  const columns = ["Titulo", "Id", "Usuário", "Descrição", "Tarefa", "Status", "Data de Criação", "Ações"];
 
   const options = {
     filterType: "checkbox",
@@ -126,15 +129,28 @@ export default function Home() {
         }
         usuario = response.data.projects[i].user.name;
 
-        data.push([titulo, id, usuario, tarefa, descricao, status, dataCriacao]);
+        data.push([
+          titulo,
+          id,
+          usuario,
+          descricao,
+          tarefa,
+          status,
+          dataCriacao,
+          <span>
+            <Tooltip title="Editar Projeto">
+              <IconButton onClick={openUpdateDialog}>
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+          </span>
+        ]);
       }
       setProjects(data);
     } catch (err) {
       console.log(err);
     }
   }
-
-  console.log(projects);
 
   return (
     <>
@@ -189,13 +205,8 @@ export default function Home() {
                 </Button>
               </Grid>
               <Grid item>
-                <Button variant="contained" color="primary" style={greenButton} onClick={openDialog}>
+                <Button variant="contained" color="primary" style={greenButton} onClick={openCreateDialog}>
                   Criar Projeto
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button variant="contained" color="primary" style={yellowButton}>
-                  Editar Projeto
                 </Button>
               </Grid>
               <Grid item>
@@ -213,7 +224,11 @@ export default function Home() {
             options={options}
           />
         </main>
-        <CreateProject open={dialogIsOpen} onClose={closeDialog} />
+        <CreateProject open={openDialogName === 'CREATE'} onClose={handleClose} />
+        <UpdateProject
+          open={openDialogName === 'UPDATE'}
+          onClose={handleClose}
+        />
       </div>
     </>
 
