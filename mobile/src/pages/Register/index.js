@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Container, Title } from '../Main/styles';
-import { LoginForm, LoginInput, ActionButton } from './styles';
+import { LoginForm, LoginInput, ActionButton } from '../Login/styles';
 import { ButtonText } from '../../components/Repository/styles';
 import api from '../../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
-export default function Login() {
+export default function Register() {
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -16,7 +17,8 @@ export default function Login() {
         e.preventDefault();
 
         try {
-            const response = await api.post('/auth/authenticate', {
+            const response = await api.post('/auth/register', {
+                name,
                 email,
                 password,
             })
@@ -37,9 +39,16 @@ export default function Login() {
 
     return (
         <Container>
-            <Title>Entrar</Title>
+            <Title>Cadastrar</Title>
 
             <LoginForm>
+                <LoginInput
+                    value={name}
+                    onChangeText={name => setName(name)}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    placeholder="Nome"
+                />
                 <LoginInput
                     value={email}
                     onChangeText={email => setEmail(email)}
@@ -57,10 +66,7 @@ export default function Login() {
                 />
 
                 <ActionButton onPress={handleLogin}>
-                    <ButtonText>ENTRAR</ButtonText>
-                </ActionButton>
-                <ActionButton onPress={() => { navigation.navigate("Register") }}>
-                    <ButtonText>REGISTRE-SE</ButtonText>
+                    <ButtonText>CADASTRAR</ButtonText>
                 </ActionButton>
             </LoginForm>
 
