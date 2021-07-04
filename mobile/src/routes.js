@@ -1,7 +1,19 @@
-import {createAppContainer, createSwitchNavigator} from 'react-navigation';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
-import Main from '../src/pages/Main';
+const Stack = createNativeStackNavigator();
 
-const Routes = createAppContainer(createSwitchNavigator({Main}));
+import Login from './pages/Login';
+import Main from './pages/Main';
 
-export default Routes;
+export default function Routes() {
+    return (
+        <NavigationContainer>
+            <Stack.Navigator>
+                <Stack.Screen name="React Auth" component={Login} />
+                <Stack.Screen name="Main" component={Main} />
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
+}
