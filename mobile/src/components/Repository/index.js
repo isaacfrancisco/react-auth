@@ -7,11 +7,13 @@ import {
   Stats,
   Stat,
   StatCount,
-  Refresh,
-  RefreshText,
+  ContainerButton,
+  EditButton,
+  DeleteButton,
+  ButtonText
 } from './styles';
 
-export default function Repository({data, onRefresh}) {
+export default function Repository({ data, onRefresh }) {
   return (
     <Container>
       <Name>{data.name}</Name>
@@ -28,10 +30,17 @@ export default function Repository({data, onRefresh}) {
         </Stat>
       </Stats>
 
-      <Refresh onPress={onRefresh}>
-        <Icon name="refresh" color="#7159c1" size={16} />
-        <RefreshText>ATUALIZAR</RefreshText>
-      </Refresh>
+      <ContainerButton>
+        <EditButton onPress={onRefresh}>
+          <Icon name="edit" color="#fff" size={16} />
+          <ButtonText>EDITAR</ButtonText>
+        </EditButton>
+        <DeleteButton onPress={onRefresh}>
+          <Icon name="trash-o" color="#fff" size={16} />
+          <ButtonText>DELETAR</ButtonText>
+        </DeleteButton>
+      </ContainerButton>
+
     </Container>
   );
 }

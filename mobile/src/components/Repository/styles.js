@@ -36,15 +36,42 @@ export const Stat = styled.View`
 export const StatCount = styled.Text`
   margin-left: 6px;
 `;
-
-export const Refresh = styled.TouchableOpacity`
-  margin-top: 20px;
+export const ContainerButton = styled.View`
   flex-direction: row;
+  align-items: center;
+  margin-right: 15px;
+  background: #fff;
 `;
 
-export const RefreshText = styled.Text`
+export const EditButton = styled.TouchableOpacity`
+  margin-top: 20px;
+  flex-direction: row;
+  background: #ad9900;
+  margin-left: 10px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  padding: 0 14px;
+  width: 150px;
+  height: 30px;
+`;
+
+export const DeleteButton = styled.TouchableOpacity`
+  margin-top: 20px;
+  flex-direction: row;
+  background: #a10000;
+  margin-left: 10px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  padding: 0 14px;
+  width: 150px;
+  height: 30px;
+`;
+
+export const ButtonText = styled.Text`
   font-size: 14px;
   font-weight: bold;
-  color: #7159c1;
+  color: #fff;
   margin-left: 5px;
 `;
