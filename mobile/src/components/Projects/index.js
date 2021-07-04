@@ -4,31 +4,27 @@ import {
   Container,
   Name,
   Description,
-  Stats,
-  Stat,
-  StatCount,
   ContainerButton,
   EditButton,
   DeleteButton,
-  ButtonText
+  ButtonText,
+  MoreInfo,
+  MoreInfoText
 } from './styles';
 
-export default function Repository({ data, onRefresh }) {
+export default function Project({ data, onRefresh }) {
+  console.log(data);
   return (
     <Container>
-      <Name>{data.name}</Name>
-      <Description>{data.description}</Description>
+      <Name>Titulo: {data[0]}</Name>
+      <Description>Usuário: {data[2]}</Description>
+      <Description>Descrição: {data[3]}</Description>
+      <Description>Tarefa: {data[4]}</Description>
 
-      <Stats>
-        <Stat>
-          <Icon name="star" size={16} colors="#333" />
-          <StatCount>{data.stars}</StatCount>
-        </Stat>
-        <Stat>
-          <Icon name="code-fork" size={16} colors="#333" />
-          <StatCount>{data.forks}</StatCount>
-        </Stat>
-      </Stats>
+      <MoreInfo>
+        <MoreInfoText>Status: {data[5]}</MoreInfoText>
+        <MoreInfoText>Data de Criacao: {data[6]}</MoreInfoText>
+      </MoreInfo>
 
       <ContainerButton>
         <EditButton onPress={onRefresh}>

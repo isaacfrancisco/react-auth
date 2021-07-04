@@ -18,23 +18,18 @@ export const Description = styled.Text.attrs({
   numberOfLines: 2,
 })`
   color: #666;
-  margin-top: 5px;
+  margin-top: 15px;
   line-height: 20px;
 `;
 
-export const Stats = styled.View`
-  flex-direction: row;
+export const MoreInfo = styled.View`
+  flex-direction: column;
   margin-top: 15px;
 `;
 
-export const Stat = styled.View`
-  flex-direction: row;
-  align-items: center;
-  margin-right: 15px;
-`;
-
-export const StatCount = styled.Text`
+export const MoreInfoText = styled.Text`
   margin-left: 6px;
+  margin-top: 6px;
 `;
 export const ContainerButton = styled.View`
   flex-direction: row;
