@@ -89,7 +89,7 @@ export default function Main() {
         renderItem={({ item }) => (
           <Projects
             data={item}
-            onRefresh={() => handleRefreshRepository(item)}
+            handleRefresh={() => handleShowProjects()}
           />
         )}
       />
