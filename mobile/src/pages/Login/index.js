@@ -3,7 +3,7 @@ import { Container, Title } from '../Main/styles';
 import { LoginInput } from '../../components/Inputs';
 import { LoginForm } from '../../components/Forms';
 import { ActionButton } from '../../components/Buttons';
-import { ButtonText } from '../../components/Projects/styles';
+import { ButtonText } from '../../components/Texts';
 import api from '../../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';

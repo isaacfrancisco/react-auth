@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
-  Name,
-  Description,
   EditButton,
   DeleteButton,
-  ButtonText,
-  MoreInfoText,
   CancelButton,
   UpdateFormInput,
 } from './styles';
+import {
+  Name,
+  Description,
+  MoreInfoText,
+  ButtonText,
+} from '../Texts';
 import {
   Container,
   ContainerUpdateModal,
