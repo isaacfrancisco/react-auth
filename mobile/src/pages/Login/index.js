@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Container, Title } from '../Main/styles';
+import { Title } from '../../components/Texts';
 import { LoginInput } from '../../components/Inputs';
 import { LoginForm } from '../../components/Forms';
 import { ActionButton } from '../../components/Buttons';
 import { ButtonText } from '../../components/Texts';
+import { ContainerApp } from '../../components/Views';
 import api from '../../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -21,16 +22,12 @@ export default function Login() {
             const response = await api.post('/auth/authenticate', {
                 email,
                 password,
-            })
-            console.log(response.data);
+            });
 
             await AsyncStorage.setItem("token", response.data.token);
             await AsyncStorage.setItem("name", response.data.user.name);
             await AsyncStorage.setItem("id", response.data.user._id);
 
-            const value = await AsyncStorage.getItem("token");
-
-            console.log(value);
             navigation.navigate('Main');
         } catch (err) {
             console.log(err);
@@ -38,7 +35,7 @@ export default function Login() {
     }
 
     return (
-        <Container>
+        <ContainerApp>
             <Title>Entrar</Title>
 
             <LoginForm>
@@ -67,6 +64,6 @@ export default function Login() {
             </LoginForm>
 
 
-        </Container>
+        </ContainerApp>
     );
 }

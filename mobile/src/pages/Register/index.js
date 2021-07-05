@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Container, Title } from '../Main/styles';
+import { Title } from '../../components/Texts';
 import { LoginInput } from '../../components/Inputs';
 import { ActionButton } from '../../components/Buttons';
 import { LoginForm } from '../../components/Forms';
 import { ButtonText } from '../../components/Texts';
+import { ContainerApp } from '../../components/Views';
 import api from '../../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
@@ -36,7 +37,7 @@ export default function Register() {
     }
 
     return (
-        <Container>
+        <ContainerApp>
             <Title>Cadastrar</Title>
             <LoginForm>
                 <LoginInput
@@ -65,6 +66,6 @@ export default function Register() {
                     <ButtonText>CADASTRAR</ButtonText>
                 </ActionButton>
             </LoginForm>
-        </Container>
+        </ContainerApp>
     );
 }

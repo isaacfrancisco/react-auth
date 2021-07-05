@@ -1,21 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
-  Container,
-  Title,
-  Form,
+  List
+} from '../../components/Lists';
+import {
   Input,
+  FormInput,
+} from '../../components/Inputs';
+import {
+  Title,
+  ButtonText
+} from '../../components/Texts';
+import {
+  Form,
+  ContainerApp,
+  ContainerActionButton,
+  ContainerCreateModal,
+  CreateForm
+} from '../../components/Views';
+import {
   SubmitSearch,
   SubmitAdd,
-  List,
-  ContainerCreateModal,
-  CreateFormInput,
-  CreateForm,
-  ContainerButton,
-  CancelButton,
   CreateButton,
-  ButtonText
-} from './styles';
+  CancelMainButton
+} from '../../components/Buttons';
 import Projects from '../../components/Projects';
 import api from '../../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -78,7 +86,6 @@ export default function Main() {
       }
 
       setProjects(data);
-      console.log("DENTRO DA FUNÇAO:", projects);
     } catch (err) {
       console.log(err);
     }
@@ -154,7 +161,7 @@ export default function Main() {
   }
 
   return (
-    <Container>
+    <ContainerApp>
       <Title>Projetos</Title>
 
       <Form>
@@ -187,21 +194,21 @@ export default function Main() {
       <Modal isVisible={openCreateModal}>
         <ContainerCreateModal>
           <CreateForm>
-            <CreateFormInput
+            <FormInput
               value={title}
               onChangeText={title => setTitle(title)}
               autoCapitalize="none"
               autoCorrect={false}
               placeholder="Titulo"
             />
-            <CreateFormInput
+            <FormInput
               value={description}
               onChangeText={description => setDescription(description)}
               autoCapitalize="none"
               autoCorrect={false}
               placeholder="Descrição"
             />
-            <CreateFormInput
+            <FormInput
               value={task}
               onChangeText={task => setTask(task)}
               autoCapitalize="none"
@@ -209,16 +216,16 @@ export default function Main() {
               placeholder="Tarefa"
             />
           </CreateForm>
-          <ContainerButton>
-            <CancelButton onPress={toggleCreateModal}>
+          <ContainerActionButton>
+            <CancelMainButton onPress={toggleCreateModal}>
               <ButtonText>CANCELAR</ButtonText>
-            </CancelButton>
+            </CancelMainButton>
             <CreateButton onPress={handleCreate}>
               <ButtonText>CRIAR PROJETO</ButtonText>
             </CreateButton>
-          </ContainerButton>
+          </ContainerActionButton>
         </ContainerCreateModal>
       </Modal>
-    </Container>
+    </ContainerApp>
   );
 }

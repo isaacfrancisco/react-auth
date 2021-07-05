@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
-  UpdateFormInput
+  FormInput
 } from '../Inputs';
 import {
   Name,
@@ -27,8 +27,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../services/api';
 
 export default function Project({ data, handleRefresh }) {
-  console.log(data);
-
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [task, setTask] = useState('');
@@ -128,28 +126,28 @@ export default function Project({ data, handleRefresh }) {
       <Modal isVisible={openUpdateModal}>
         <ContainerUpdateModal>
           <UpdateForm>
-            <UpdateFormInput
+            <FormInput
               value={title}
               onChangeText={title => setTitle(title)}
               autoCapitalize="none"
               autoCorrect={false}
               placeholder="Titulo"
             />
-            <UpdateFormInput
+            <FormInput
               value={description}
               onChangeText={description => setDescription(description)}
               autoCapitalize="none"
               autoCorrect={false}
               placeholder="Descrição"
             />
-            <UpdateFormInput
+            <FormInput
               value={task}
               onChangeText={task => setTask(task)}
               autoCapitalize="none"
               autoCorrect={false}
               placeholder="Tarefa"
             />
-            <UpdateFormInput
+            <FormInput
               value={status}
               onChangeText={status => setStatus(status)}
               autoCapitalize="none"

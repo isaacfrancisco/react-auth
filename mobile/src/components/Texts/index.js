@@ -25,3 +25,10 @@ export const ButtonText = styled.Text`
   color: #fff;
   margin-left: 5px;
 `;
+
+export const Title = styled.Text`
+  font-size: 32px;
+  color: #fff;
+  font-weight: bold;
+  padding: 0 20px;
+`;
