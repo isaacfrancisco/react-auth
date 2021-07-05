@@ -129,7 +129,6 @@ export default function Home() {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpenSnackbar(false);
   };
 
@@ -137,11 +136,8 @@ export default function Home() {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpenErrorSnackbar(false);
   };
-
-
 
   useEffect(() => {
     handleShowProjects();

@@ -19,7 +19,7 @@ export default function ResetPassword() {
     const paperStyle = {
         padding: 20,
         height: '55vh',
-        width: 300,
+        width: 350,
         margin: '150px auto'
     }
 
