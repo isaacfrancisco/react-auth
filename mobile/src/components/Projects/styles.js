@@ -8,7 +8,7 @@ export const Container = styled.View`
   margin-bottom: 15px;
 `;
 
-export const ContainerModal = styled.View`
+export const ContainerDeleteModal = styled.View`
   margin: 20px;
   padding: 20px;
   border-radius: 4px;

@@ -59,7 +59,7 @@ export default function DeleteProject(props) {
         setOpenErrorSnackbar(false);
     };
 
-    async function handleUpdate(e) {
+    async function handleDelete(e) {
         e.preventDefault();
 
         try {
@@ -95,7 +95,7 @@ export default function DeleteProject(props) {
                     <Button color="primary" onClick={handleClose}>
                         Cancelar
                     </Button>
-                    <Button color="primary" onClick={handleUpdate}>
+                    <Button color="primary" onClick={handleDelete}>
                         Remover
                     </Button>
                 </DialogActions>

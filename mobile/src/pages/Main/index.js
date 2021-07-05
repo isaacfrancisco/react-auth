@@ -1,10 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Container, Title, Form, Input, SubmitSearch, SubmitAdd, List } from './styles';
+import {
+  Container,
+  Title,
+  Form,
+  Input,
+  SubmitSearch,
+  SubmitAdd,
+  List,
+  ContainerCreateModal,
+  CreateFormInput,
+  CreateForm,
+  ContainerButton,
+  CancelButton,
+  CreateButton,
+  ButtonText
+} from './styles';
 import Projects from '../../components/Projects';
 import api from '../../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import Modal from 'react-native-modal';
 
 
 export default function Main() {
@@ -12,8 +27,17 @@ export default function Main() {
   const [error, setError] = useState(false);
   const [projects, setProjects] = useState([]);
 
-  useEffect(() => {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [task, setTask] = useState('');
 
+  const [openCreateModal, setOpenCreateModal] = useState(false);
+
+  const toggleCreateModal = () => {
+    setOpenCreateModal(!openCreateModal);
+  };
+
+  useEffect(() => {
     handleShowProjects();
   }, []);
 
@@ -61,6 +85,32 @@ export default function Main() {
     }
   }
 
+  async function handleCreate() {
+    const token = await AsyncStorage.getItem("token");
+    const AuthToken = "Bearer ".concat(token);
+    const id = await AsyncStorage.getItem("id");
+    const tasks = [{
+      title: task,
+      assignedTo: id
+    }]
+
+    console.log(AuthToken, id, title, description, task);
+
+    try {
+      await api.post("/projects", {
+        title,
+        description,
+        tasks,
+      }, {
+        headers: { Authorization: AuthToken },
+      });
+      toggleCreateModal();
+      handleShowProjects();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <Container>
       <Title>Projetos</Title>
@@ -77,7 +127,7 @@ export default function Main() {
         <SubmitSearch>
           <Icon name="search" size={22} color="#FFF" />
         </SubmitSearch>
-        <SubmitAdd onPress={handleShowProjects}>
+        <SubmitAdd onPress={toggleCreateModal}>
           <Icon name="add" size={22} color="#FFF" />
         </SubmitAdd>
       </Form>
@@ -93,6 +143,41 @@ export default function Main() {
           />
         )}
       />
+      <Modal isVisible={openCreateModal}>
+        <ContainerCreateModal>
+          <CreateForm>
+            <CreateFormInput
+              value={title}
+              onChangeText={title => setTitle(title)}
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholder="Titulo"
+            />
+            <CreateFormInput
+              value={description}
+              onChangeText={description => setDescription(description)}
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholder="Descrição"
+            />
+            <CreateFormInput
+              value={task}
+              onChangeText={task => setTask(task)}
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholder="Tarefa"
+            />
+          </CreateForm>
+          <ContainerButton>
+            <CancelButton onPress={toggleCreateModal}>
+              <ButtonText>CANCELAR</ButtonText>
+            </CancelButton>
+            <CreateButton onPress={handleCreate}>
+              <ButtonText>CRIAR PROJETO</ButtonText>
+            </CreateButton>
+          </ContainerButton>
+        </ContainerCreateModal>
+      </Modal>
     </Container>
   );
 }

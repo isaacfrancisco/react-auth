@@ -11,7 +11,7 @@ import {
   MoreInfo,
   MoreInfoText,
   CancelButton,
-  ContainerModal
+  ContainerDeleteModal
 } from './styles';
 import Modal from 'react-native-modal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -20,13 +20,13 @@ import api from '../../services/api';
 export default function Project({ data, handleRefresh }) {
   console.log(data);
 
-  const [openModal, setOpenModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  const toggleModal = () => {
-    setOpenModal(!openModal);
+  const toggleDeleteModal = () => {
+    setOpenDeleteModal(!openDeleteModal);
   };
 
-  async function handleDelete(e) {
+  async function handleDelete() {
     const token = await AsyncStorage.getItem("token");
     const AuthToken = "Bearer ".concat(token);
 
@@ -35,8 +35,8 @@ export default function Project({ data, handleRefresh }) {
         {
           headers: { Authorization: AuthToken },
         });
+      toggleDeleteModal();
       handleRefresh();
-      toggleModal();
     } catch (err) {
       console.log(err);
     }
@@ -60,21 +60,21 @@ export default function Project({ data, handleRefresh }) {
           <Icon name="edit" color="#fff" size={16} />
           <ButtonText>EDITAR</ButtonText>
         </EditButton>
-        <DeleteButton onPress={toggleModal}>
+        <DeleteButton onPress={toggleDeleteModal}>
           <Icon name="trash-o" color="#fff" size={16} />
           <ButtonText>DELETAR</ButtonText>
         </DeleteButton>
       </ContainerButton>
-      <Modal isVisible={openModal}>
-        <ContainerModal>
+      <Modal isVisible={openDeleteModal}>
+        <ContainerDeleteModal>
           <MoreInfoText>Realmente deseja remover esse o projeto?</MoreInfoText>
           <DeleteButton onPress={handleDelete}>
             <ButtonText>DELETAR</ButtonText>
           </DeleteButton>
-          <CancelButton onPress={toggleModal}>
+          <CancelButton onPress={toggleDeleteModal}>
             <ButtonText>CANCELAR</ButtonText>
           </CancelButton>
-        </ContainerModal>
+        </ContainerDeleteModal>
       </Modal>
     </Container>
   );
