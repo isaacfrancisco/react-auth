@@ -17,6 +17,16 @@ export const ContainerDeleteModal = styled.View`
   align-items: center;
 `;
 
+export const ContainerUpdateModal = styled.View`
+  margin: 20px;
+  padding: 20px;
+  border-radius: 4px;
+  background: #fff;
+  margin-bottom: 15px;
+  align-items: center;
+  height: 350px;
+`;
+
 export const Name = styled.Text`
   font-size: 18px;
   font-weight: bold;
@@ -82,7 +92,7 @@ export const CancelButton = styled.TouchableOpacity`
   align-items: center;
   border-radius: 4px;
   padding: 0 14px;
-  width: 150px;
+  width: 145px;
   height: 30px;
 `;
 
@@ -91,4 +101,25 @@ export const ButtonText = styled.Text`
   font-weight: bold;
   color: #fff;
   margin-left: 5px;
+`;
+
+export const UpdateForm = styled.View`
+  flex-direction: column;
+  margin-top: 10px;
+  padding: 0 20px;
+  height: 250px;
+`;
+
+export const UpdateFormInput = styled.TextInput.attrs({
+  placeholderTextColor: '#999',
+})`
+  flex: 1;
+  padding: 12px 15px;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+  background: #fff;
+  border: 2px solid #333;
+  margin: 10px;
+  width: 300px;
 `;

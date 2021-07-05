@@ -94,8 +94,6 @@ export default function Main() {
       assignedTo: id
     }]
 
-    console.log(AuthToken, id, title, description, task);
-
     try {
       await api.post("/projects", {
         title,
