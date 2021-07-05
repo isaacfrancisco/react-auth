@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
-  EditButton,
-  DeleteButton,
-  CancelButton,
-  UpdateFormInput,
-} from './styles';
+  UpdateFormInput
+} from '../Inputs';
 import {
   Name,
   Description,
   MoreInfoText,
-  ButtonText,
+  ButtonText
 } from '../Texts';
 import {
   Container,
@@ -20,6 +17,11 @@ import {
   MoreInfo,
   UpdateForm
 } from '../Views';
+import {
+  EditButton,
+  DeleteButton,
+  CancelButton
+} from '../Buttons';
 import Modal from 'react-native-modal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../services/api';
