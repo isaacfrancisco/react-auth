@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Title } from '../Main/styles';
-import { LoginForm, LoginInput, ActionButton } from '../Login/styles';
+import { LoginForm, LoginInput } from '../Login/styles';
+import { ActionButton } from '../../components/Buttons';
 import { ButtonText } from '../../components/Projects/styles';
 import api from '../../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,7 +14,7 @@ export default function Register() {
 
     const navigation = useNavigation();
 
-    async function handleLogin(e) {
+    async function handleRegister(e) {
         e.preventDefault();
 
         try {
@@ -21,16 +22,12 @@ export default function Register() {
                 name,
                 email,
                 password,
-            })
-            console.log(response.data);
+            });
 
             await AsyncStorage.setItem("token", response.data.token);
             await AsyncStorage.setItem("name", response.data.user.name);
             await AsyncStorage.setItem("id", response.data.user._id);
 
-            const value = await AsyncStorage.getItem("token");
-
-            console.log(value);
             navigation.navigate('Main');
         } catch (err) {
             console.log(err);
@@ -40,7 +37,6 @@ export default function Register() {
     return (
         <Container>
             <Title>Cadastrar</Title>
-
             <LoginForm>
                 <LoginInput
                     value={name}
@@ -64,13 +60,10 @@ export default function Register() {
                     placeholder="Senha"
                     secureTextEntry={true}
                 />
-
-                <ActionButton onPress={handleLogin}>
+                <ActionButton onPress={handleRegister}>
                     <ButtonText>CADASTRAR</ButtonText>
                 </ActionButton>
             </LoginForm>
-
-
         </Container>
     );
 }

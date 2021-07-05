@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Title } from '../Main/styles';
-import { LoginForm, LoginInput, ActionButton } from './styles';
+import { LoginForm, LoginInput } from './styles';
+import { ActionButton } from '../../components/Buttons';
 import { ButtonText } from '../../components/Projects/styles';
 import api from '../../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';

@@ -106,6 +106,7 @@ export default function Project({ data, handleRefresh }) {
       <Description>Tarefa: {data[4]}</Description>
       <MoreInfo>
         <MoreInfoText>Status: {data[5]}</MoreInfoText>
+        <MoreInfoText>Id: {data[1]}</MoreInfoText>
         <MoreInfoText>Data de Criacao: {data[6]}</MoreInfoText>
       </MoreInfo>
       <ContainerButton>

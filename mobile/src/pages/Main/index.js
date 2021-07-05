@@ -23,8 +23,7 @@ import Modal from 'react-native-modal';
 
 
 export default function Main() {
-  const [input, setInput] = useState('');
-  const [error, setError] = useState(false);
+  const [idProject, setIdProject] = useState('');
   const [projects, setProjects] = useState([]);
 
   const [title, setTitle] = useState('');
@@ -85,6 +84,51 @@ export default function Main() {
     }
   }
 
+  async function handleSearch() {
+    const token = await AsyncStorage.getItem("token");
+    const AuthToken = "Bearer ".concat(token);
+
+    try {
+      setProjects([]);
+      var titulo, id, descricao, dataCriacao, tarefa, status, usuario;
+      const data = [];
+
+      const response = await api.get("/projects/" + idProject,
+        {
+          headers: { Authorization: AuthToken },
+        });
+
+      titulo = response.data.project.title;
+      id = response.data.project._id;
+      descricao = response.data.project.description;
+      dataCriacao = response.data.project.createdAt;
+      for (let i = 0; i < response.data.project.tasks.length; i++) {
+        tarefa = response.data.project.tasks[i].title;
+        if (response.data.project.tasks[i].completed === false) {
+          status = "Incompleta";
+        } else {
+          status = "Completada";
+        }
+      }
+      usuario = response.data.project.user.name;
+
+      data.push([
+        titulo,
+        id,
+        usuario,
+        descricao,
+        tarefa,
+        status,
+        dataCriacao,
+      ]);
+
+      setProjects(data);
+    } catch (err) {
+      console.log(err);
+    }
+
+  }
+
   async function handleCreate() {
     const token = await AsyncStorage.getItem("token");
     const AuthToken = "Bearer ".concat(token);
@@ -115,14 +159,13 @@ export default function Main() {
 
       <Form>
         <Input
-          value={input}
-          error={error}
-          onChangeText={setInput}
+          value={idProject}
+          onChangeText={project => setIdProject(project)}
           autoCapitalize="none"
           autoCorrect={false}
           placeholder="Procurar projeto..."
         />
-        <SubmitSearch>
+        <SubmitSearch onPress={handleSearch}>
           <Icon name="search" size={22} color="#FFF" />
         </SubmitSearch>
         <SubmitAdd onPress={toggleCreateModal}>
