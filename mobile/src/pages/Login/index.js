@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Title } from '../Main/styles';
-import { LoginForm, LoginInput } from './styles';
+import { LoginInput } from './styles';
+import { LoginForm } from '../../components/Forms';
 import { ActionButton } from '../../components/Buttons';
 import { ButtonText } from '../../components/Projects/styles';
 import api from '../../services/api';
