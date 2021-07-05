@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Title } from '../Main/styles';
-import { LoginInput } from '../Login/styles';
+import { LoginInput } from '../../components/Inputs';
 import { ActionButton } from '../../components/Buttons';
 import { LoginForm } from '../../components/Forms';
 import { ButtonText } from '../../components/Projects/styles';
